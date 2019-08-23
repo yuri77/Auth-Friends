@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import FriendForm from "./FriendForm";
+import FriendCard from "./FriendCard";
 
 const Friends = () => {
   const [friends, setFriends] = useState([]);
@@ -26,11 +27,22 @@ const Friends = () => {
       .post("http://localhost:5000/api/friends", friend)
       .then(res => {
         console.log("friend post request", res);
-        setFriends(res.data);
+        getData();
       })
       .catch(err => {
         console.log(err.response);
       });
+  };
+
+  const deleteFriend = id => {
+    console.log("delete id", id);
+    axiosWithAuth()
+      .delete(`http://localhost:5000/api/friends/${id}`)
+      .then(res => {
+        console.log(res);
+        getData();
+      })
+      .catch(err => console.log(err));
   };
 
   return (
@@ -39,11 +51,11 @@ const Friends = () => {
       <FriendForm submitFriend={addFriend} />
       {friends.map(friend => {
         return (
-          <div key={friend.id}>
-            <p>{friend.name}</p>
-            <p>{friend.age}</p>
-            <p>{friend.email}</p>
-          </div>
+          <FriendCard
+            key={friend.id}
+            friend={friend}
+            deleteFriend={deleteFriend}
+          />
         );
       })}
     </div>
