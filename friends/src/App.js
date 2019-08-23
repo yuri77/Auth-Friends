@@ -14,11 +14,11 @@ function App() {
           <nav>
             <Link to="/login">Login</Link>
 
-            <Link to="/friend">Friends: Protected information</Link>
+            <Link to="/friends">Friends: Protected information</Link>
           </nav>
         </header>
         <Route path="/login" render={props => <Login {...props} />} />
-        <PrivateRoute exact path="/friend" component={Friends} />
+        <PrivateRoute path="/friends" component={Friends} />
       </div>
     </Router>
   );
