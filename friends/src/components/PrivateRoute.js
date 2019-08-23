@@ -15,4 +15,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   );
 };
 
+//const PrivateRoute = props=>{
+//   const propswithoutComponent={...props, component:undefined}
+// }
+
 export default PrivateRoute;

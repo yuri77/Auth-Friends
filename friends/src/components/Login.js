@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const Login = () => {
+const Login = ({ history }) => {
   const [auth, setAuth] = useState({ username: "", password: "" });
 
   const handleChange = e => {
@@ -15,6 +15,7 @@ const Login = () => {
       .then(res => {
         console.log(res);
         localStorage.setItem("token", res.data.payload);
+        history.push("./friend");
       })
       .catch(err => console.log(err.response));
     setAuth({ username: "", password: "" });
@@ -27,7 +28,7 @@ const Login = () => {
           type="text"
           name="username"
           value={auth.username}
-          placeholder={"name"}
+          placeholder={"username"}
           onChange={handleChange}
         />
         <input

@@ -1,30 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import FriendForm from "./FriendForm";
 
 const Friends = () => {
   const [friends, setFriends] = useState([]);
 
   const getData = () => {
     axiosWithAuth()
-      .get("http://localhost:5000/api/friends")
+      .get("http://localhost:5000/api/friends", {
+        headers: { Authorization: localStorage.getItem("token") }
+      })
       .then(res => {
         console.log("friend get data", res);
         setFriends(res.data);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err.response));
   };
   useEffect(() => {
     getData();
   }, []);
 
-  console.log("friends", friends);
+  // console.log("friends", friends);
+  const addFriend = friend => {
+    axiosWithAuth()
+      .post("http://localhost:5000/api/friends", friend)
+      .then(res => {
+        console.log("friend post request", res);
+        setFriends(res.data);
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
 
   return (
     <div>
       <h1>Friends</h1>
+      <FriendForm submitFriend={addFriend} />
       {friends.map(friend => {
         return (
-          <div>
+          <div key={friend.id}>
             <p>{friend.name}</p>
             <p>{friend.age}</p>
             <p>{friend.email}</p>
